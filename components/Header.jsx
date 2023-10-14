@@ -15,6 +15,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 const Header = () => {
     const [searchQuery, setSearchQuery] = useState("");
+    const [visibleSidebar, setVisibleSidebar] = useState(false);
     const { loading, mobileMenu, setmobileMenu } = useContext(Context);
     const router = useRouter();
     const searchQueryHandler = (e) => {
@@ -22,7 +23,7 @@ const Header = () => {
             router.push(`/searchResults/${searchQuery}`);
         }
     }
-    const moblieMenuToggle = () => setmobileMenu(!mobileMenu);
+    const moblieMenuToggle = () => { setVisibleSidebar(!visibleSidebar); setmobileMenu(!visibleSidebar) };
 
     const { pathname } = router;
     const pageName = pathname?.split("/")?.filter(Boolean)?.[0];
@@ -32,12 +33,12 @@ const Header = () => {
             {loading && <Loader />}
             {/* The hamburger menu is displayed in mobile view else default screen */}
             <div className='flex h-5 items-center justify-between'>
-                {pageName !== 'video' && (
+                {(
                     <div
-                        className='flex md:hidden mr-3 md:mr-6 cursor-pointer items-center justify-center h-10 w-10 rounded-full hover:bg-[#303030]/[0.6]'
+                        className='flex  mr-3 md:mr-6 cursor-pointer items-center justify-center h-10 w-10 rounded-full hover:bg-[#303030]/[0.6]'
                         onClick={moblieMenuToggle}
                     >
-                        {mobileMenu ?
+                        {visibleSidebar ?
                             (<CgClose className='text-xl text-white' />) :
                             (<SlMenu className='text-xl text-white' />)
                         }
